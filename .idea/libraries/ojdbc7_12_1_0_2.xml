@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="ojdbc7-12.1.0.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/ojdbc7-12.1.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-pool-1.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-dbcp-1.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

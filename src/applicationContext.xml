@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+             http://www.springframework.org/schema/beans/spring-beans.xsd
+             http://www.springframework.org/schema/tx
+             http://www.springframework.org/schema/tx/spring-tx.xsd
+              http://www.springframework.org/schema/aop
+              http://www.springframework.org/schema/aop/spring-aop.xsd
+                http://www.springframework.org/schema/context
+              http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+        <context:component-scan base-package="org.langqiao.aop">
+
+        </context:component-scan>
+
+
+        <!-->
+         トランザクション
+
+        <-->
+
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+            <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+            <property name="url" value="jdbc:mysql://localhost:3306/test?serverTimezone=GMT%2B8"></property>
+            <property name="username" value="root"></property>
+            <property name="password" value="admin"></property>
+            <property name="maxActive" value="10"></property>
+            <property name="maxIdle" value="6"></property>
+        </bean>
+
+        <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+            <property name="dataSource" ref="dataSource"></property>
+        </bean>
+
+        <tx:annotation-driven transaction-manager="txManager" />
+
+        <bean id="student" class="org.langqiao.entity.Student">
+            <property name="stuAge" value="15"></property>
+            <property name="stuName" value="tom"></property>
+            <property name="stuNo" value="1"></property>
+        </bean>
+
+        <bean id="javacourse" class="org.langqiao.newinstance.JavaCourse">
+
+        </bean>
+        <bean id="htmlcourse" class="org.langqiao.newinstance.HtmlCourse">
+
+        </bean>
+
+        <bean id ="teacher" class="org.langqiao.entity.Teacher">
+
+            <property name="name">
+                <value type="java.lang.String">e<![CDATA[&]]>z
+                </value>
+            </property>
+            <property name="age" value="23"></property>
+            <!--
+            <constructor-arg value="zhangsan"></constructor-arg>
+            <constructor-arg value="24"></constructor-arg>
+        <-->
+        </bean>
+
+        <!--<bean id="course" class="org.langqiao.entity.Course" autowire="byName">-->
+    <bean id="course" class="org.langqiao.entity.Course">
+            <property name="courseName" value="java"></property>
+
+
+            <property name="courseHour" value="200"></property>
+            <property name="teacher" ref="teacher"></property>
+            <!--<constructor-arg value="C"></constructor-arg>-->
+            <!--<constructor-arg value="300"></constructor-arg>-->
+            <!--<constructor-arg ref="teacher"></constructor-arg>-->
+
+        </bean>
+
+        <bean id="collectionDemo" class="org.langqiao.entity.AllCollectionType">
+            <!--<property name="list">-->
+                <!--<list>-->
+                    <!--<value>-->
+                        <!--zuqiu1-->
+                    <!--</value>-->
+                    <!--<value>basketball</value>-->
+                <!--</list>-->
+            <!--</property>-->
+            <constructor-arg>
+                <list>
+                <value>
+                zuqiu11111111111111
+                </value>
+                <value>basketball111111111</value>
+                </list>
+
+            </constructor-arg>
+
+            <property name="map">
+                <map>
+                    <entry>
+                        <key>
+                            <value>zuqiu222222222</value>
+                        </key>
+                        <value>
+                            zuqiu
+                        </value>
+                    </entry>
+                </map>
+            </property>
+            <property name="props">
+                <props>
+                    <prop key="football">zuqiu66666666666666</prop>
+                    <prop key="basketball">zuqiu</prop>
+                </props>
+            </property>
+            <property name="set">
+                <set>
+                    <value>ziqo2654654654</value>
+                    <value>ddw</value>
+                </set>
+            </property>
+            <property name="array" >
+                <array>
+                    <value>zuqiu26546546546</value>
+                    <value>dasda</value>
+                </array>
+            </property>
+        </bean>
+
+    <!--<bean id="studentDao" class="StudentDaolmpl">-->
+        <!--&lt;!&ndash;<constructor-arg value="C"></constructor-arg>&ndash;&gt;-->
+        <!--&lt;!&ndash;<constructor-arg value="300"></constructor-arg>&ndash;&gt;-->
+        <!--&lt;!&ndash;<constructor-arg ref="teacher"></constructor-arg>&ndash;&gt;-->
+
+    <!--</bean>-->
+    <bean id="studentDao" class="org.langqiao.dao.impl.StudentDaolmpl">
+
+
+    </bean>
+
+
+    <!-->
+    前置
+    <-->
+    <bean id="studentService" class="org.langqiao.newinstance.StudentServiceImpl">
+        <property name="studentDao" ref="studentDao"></property>
+    </bean>
+
+    <!-->
+通知
+<-->
+    <bean id="before" class="org.langqiao.aop.LogBefore">
+
+    </bean>
+
+    <bean id="after" class="org.langqiao.aop.LogAfter"></bean>
+
+    <bean id="expection" class="org.langqiao.aop.LogException"></bean>
+
+    <bean id="around" class="org.langqiao.aop.LogAround"></bean>
+    <!-->
+
+
+
+連携
+<-->
+    <!--<aop:config>-->
+        <!--<aop:pointcut id="pointcut" expression=" execution (public void org.langqiao.newinstance.StudentServiceImpl.deleteStudentByNo(int)) or execution( public void org.langqiao.newinstance.StudentServiceImpl.addStudent(org.langqiao.entity.Student))"></aop:pointcut>-->
+        <!--<aop:advisor advice-ref="before" pointcut-ref="pointcut"/>-->
+    <!--</aop:config>-->
+
+    <!--<aop:config>-->
+        <!--<aop:pointcut id="pointcutR" expression="execution( public void org.langqiao.newinstance.StudentServiceImpl.addStudent(org.langqiao.entity.Student))"></aop:pointcut>-->
+        <!--<aop:advisor advice-ref="after" pointcut-ref="pointcutR"/>-->
+    <!--</aop:config>-->
+
+
+    <aop:config>
+        <aop:pointcut id="pointcutE" expression="execution( public void org.langqiao.newinstance.StudentServiceImpl.addStudent(org.langqiao.entity.Student))"></aop:pointcut>
+        <aop:advisor advice-ref="expection" pointcut-ref="pointcutE"/>
+    </aop:config>
+
+    <aop:config>
+        <aop:pointcut id="pointcutAr" expression="execution(public void org.langqiao.newinstance.StudentServiceImpl.addStudent(org.langqiao.entity.Student))"></aop:pointcut>
+        <aop:advisor advice-ref="around" pointcut-ref="pointcutAr"></aop:advisor>
+    </aop:config>
+
+
+    <aop:aspectj-autoproxy>
+
+    </aop:aspectj-autoproxy>
+
+    <bean id="logshame" class="org.langqiao.aop.LogSchame"></bean>
+
+    <aop:config>
+        <aop:pointcut id="pcshame" expression="execution( public void org.langqiao.newinstance.StudentServiceImpl.addStudent(org.langqiao.entity.Student))"></aop:pointcut>
+        <!--<aop:advisor advice-ref="logshame" pointcut-ref="pointcutShame"/>-->
+        <aop:aspect ref="logshame">
+
+
+            <aop:after-returning method="afterReturning" returning="returnValue" pointcut-ref="pcshame"></aop:after-returning>
+            <aop:before method="before" pointcut-ref="pcshame"></aop:before>
+            <aop:after-throwing method="whenException" throwing="e" pointcut-ref="pcshame"></aop:after-throwing>
+            <aop:around method="around" pointcut-ref="pcshame"></aop:around>
+
+        </aop:aspect>
+    </aop:config>
+
+</beans>
